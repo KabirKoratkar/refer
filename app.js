@@ -570,6 +570,9 @@ let toastTimer = null;
 let lastMatchedTitle = "";
 let lastMatchedAt = 0;
 let activeSearchController = null;
+let voiceSearchTimer = null;
+let lastVoiceSearchKey = "";
+let lastVoiceSearchAt = 0;
 const SEARCH_API = location.hostname.endsWith("github.io")
   ? "https://refer-kabir.vercel.app/api/search"
   : "/api/search";
@@ -669,6 +672,39 @@ function extractReferenceCue(input) {
   return "";
 }
 
+function queueVoiceSearch(transcript, options = {}) {
+  const words = transcript.trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return;
+
+  const recentTranscript = words.slice(-18).join(" ");
+  const catalogMatch = findCatalogMatch(recentTranscript);
+  const extractedCue = extractReferenceCue(recentTranscript);
+  const soundsLikeSocialReference = /\b(meme|tiktok|tick tock|trend|sound|audio|viral|giving|reminds? me|you know that)\b/i.test(recentTranscript);
+  const searchText = catalogMatch?.title || extractedCue || recentTranscript;
+  const searchKey = normalize(searchText);
+  if (!searchKey) return;
+
+  clearTimeout(voiceSearchTimer);
+  const runSearch = () => {
+    if (searchKey === lastVoiceSearchKey && Date.now() - lastVoiceSearchAt < 15000) return;
+    lastVoiceSearchKey = searchKey;
+    lastVoiceSearchAt = Date.now();
+    resolveReference(searchText, {
+      fromSpeech: true,
+      silentMiss: true,
+      allowAnyCue: true,
+    });
+  };
+
+  if (catalogMatch || options.isFinal) {
+    runSearch();
+    return;
+  }
+
+  const delay = soundsLikeSocialReference || extractedCue ? 350 : 700;
+  voiceSearchTimer = setTimeout(runSearch, delay);
+}
+
 async function searchWikipedia(query) {
   const params = new URLSearchParams({
     action: "query",
@@ -739,6 +775,16 @@ function buildSearchLinks(query) {
   };
 }
 
+function getTikTokId(value) {
+  try {
+    const url = new URL(value);
+    if (!url.hostname.endsWith("tiktok.com")) return "";
+    return url.pathname.match(/\/video\/(\d+)/)?.[1] || "";
+  } catch (error) {
+    return "";
+  }
+}
+
 async function resolveReference(input, options = {}) {
   const query = input.trim();
   if (!query) {
@@ -750,7 +796,7 @@ async function resolveReference(input, options = {}) {
   let match = findCatalogMatch(query);
   const soundsLikeSocialReference = /\b(meme|tiktok|tick tock|trend|sound|audio|viral|giving|reminds? me|you know that)\b/i.test(query);
   const cue = options.fromSpeech
-    ? match?.title || extractReferenceCue(query) || (soundsLikeSocialReference ? query : "")
+    ? match?.title || extractReferenceCue(query) || (soundsLikeSocialReference || options.allowAnyCue ? query : "")
     : query;
 
   if (!cue) {
@@ -811,6 +857,7 @@ function getClipLabel(reference) {
 
 function renderWebResult(web, catalogMatch) {
   const [top, ...related] = web.results;
+  const tiktokId = getTikTokId(top.url);
   const reference = {
     title: catalogMatch?.title || top.title,
     source: catalogMatch?.source || top.domain,
@@ -823,6 +870,7 @@ function renderWebResult(web, catalogMatch) {
     clipUrl: top.url,
     clipLabel: top.videoId ? "Play video" : "Open source",
     embedId: top.videoId || "",
+    tiktokId,
     exact: false,
   };
 
@@ -879,6 +927,7 @@ function renderResult(reference, relatedResults = [], searches = {}) {
   const sourceLink = reference.sourceUrl || `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(reference.wikiQuery || reference.title)}`;
   const clipLink = reference.clipUrl || getDiscoveryUrl(reference);
   const hasExactMoment = Boolean(reference.embedId || reference.clipUrl) && reference.exact !== false;
+  const hasEmbeddedPlayer = Boolean(reference.embedId || reference.tiktokId);
 
   let media;
   if (reference.embedId) {
@@ -892,13 +941,24 @@ function renderResult(reference, relatedResults = [], searches = {}) {
         allowfullscreen
       ></iframe>
     `;
+  } else if (reference.tiktokId) {
+    media = `
+      <iframe
+        class="clip-frame tiktok-frame"
+        src="https://www.tiktok.com/player/v1/${escapeHtml(reference.tiktokId)}?controls=1&description=1"
+        title="${escapeHtml(reference.title)} TikTok"
+        loading="lazy"
+        allow="encrypted-media; fullscreen; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    `;
   } else if (reference.thumbnail) {
     media = `<img class="result-image" src="${escapeHtml(reference.thumbnail)}" alt="${escapeHtml(reference.source)}" />`;
   } else {
     media = `<div class="result-image-fallback"><i data-lucide="play-square"></i></div>`;
   }
 
-  const mediaAction = reference.embedId ? "" : `
+  const mediaAction = hasEmbeddedPlayer ? "" : `
     <a class="media-action" href="${escapeHtml(clipLink)}" target="_blank" rel="noopener noreferrer">
       <i data-lucide="play"></i><span>${escapeHtml(getClipLabel(reference))}</span>
     </a>
@@ -985,11 +1045,11 @@ function setupRecognition() {
 
     if (finalText) {
       committedTranscript = `${committedTranscript} ${finalText}`.trim();
-      const recentTranscript = committedTranscript.split(/\s+/).slice(-32).join(" ");
-      resolveReference(recentTranscript, { fromSpeech: true, silentMiss: true });
     }
-    ui.transcript.textContent = `${committedTranscript} ${interim}`.trim() || "Listening...";
+    const liveTranscript = `${committedTranscript} ${interim}`.trim();
+    ui.transcript.textContent = liveTranscript || "Listening...";
     ui.transcript.classList.add("has-text");
+    queueVoiceSearch(liveTranscript, { isFinal: Boolean(finalText) });
   };
 
   recognition.onend = () => {
@@ -1042,7 +1102,12 @@ function trySample() {
 }
 
 function clearTranscript() {
+  clearTimeout(voiceSearchTimer);
+  activeSearchController?.abort();
+  activeSearchController = null;
   committedTranscript = "";
+  lastVoiceSearchKey = "";
+  lastVoiceSearchAt = 0;
   ui.transcript.textContent = "Listening is off. Type above or turn it on.";
   ui.transcript.classList.remove("has-text");
 }
