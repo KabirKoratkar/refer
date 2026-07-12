@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f4ee" />
+    <meta
+      name="description"
+      content="CatchThat listens for pop-culture references and gives you the context in real time."
+    />
+    <title>CatchThat - Never miss the reference</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.webmanifest" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="CatchThat home">
+        <span class="brand-mark" aria-hidden="true"><i data-lucide="audio-lines"></i></span>
+        <span>CatchThat<span class="brand-dot">.</span></span>
+      </a>
+      <nav class="top-actions" aria-label="App controls">
+        <span class="privacy-note"><i data-lucide="shield-check"></i> Audio stays on your device</span>
+        <a
+          class="icon-link"
+          href="https://github.com/KabirKoratkar/catch-that-reference"
+          aria-label="Open project on GitHub"
+          title="Open GitHub repository"
+        >
+          <i data-lucide="github"></i>
+        </a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Live reference finder</p>
+          <h1 id="page-title">Wait, what was that from?</h1>
+          <p class="intro-copy">Listen along or type what you heard. Get the origin, meaning, and a link in seconds.</p>
+        </div>
+        <div class="search-wrap" role="search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <label class="sr-only" for="reference-search">Search a quote or reference</label>
+          <input
+            id="reference-search"
+            type="search"
+            placeholder='Try “the limit does not exist”'
+            autocomplete="off"
+          />
+          <button id="search-button" class="search-button" type="button">
+            <span>Find it</span><i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Reference listener">
+        <div class="listen-panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Live room</p>
+              <h2>Listening desk</h2>
+            </div>
+            <div id="live-badge" class="live-badge idle"><span></span><span id="live-label">Ready</span></div>
+          </div>
+
+          <div class="listener-stage">
+            <div id="waveform" class="waveform" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <button id="listen-button" class="listen-button" type="button">
+              <i data-lucide="mic"></i><span>Start listening</span>
+            </button>
+            <button id="sample-button" class="sample-button" type="button">
+              <i data-lucide="sparkles"></i><span>Try a sample</span>
+            </button>
+            <p id="support-note" class="support-note">Works best in Chrome, Edge, or Safari.</p>
+          </div>
+
+          <div class="transcript-box" aria-live="polite">
+            <div class="transcript-heading">
+              <span>Live transcript</span>
+              <button id="clear-button" class="text-button" type="button">Clear</button>
+            </div>
+            <p id="transcript">Your conversation will appear here while listening.</p>
+          </div>
+        </div>
+
+        <aside id="result-panel" class="result-panel" aria-live="polite">
+          <div id="empty-state" class="empty-state">
+            <div class="empty-visual" aria-hidden="true">
+              <i data-lucide="scan-search"></i>
+            </div>
+            <p class="section-label">Standing by</p>
+            <h2>Your next reference lands here</h2>
+            <p>Say a quote, mention a title, or describe a meme. CatchThat will connect the dots.</p>
+            <div class="example-row">
+              <button class="example-chip" data-example="May the Force be with you" type="button">“May the Force...”</button>
+              <button class="example-chip" data-example="Very demure, very mindful" type="button">“Very demure...”</button>
+            </div>
+          </div>
+          <div id="result-content" class="result-content" hidden></div>
+        </aside>
+      </section>
+
+      <section class="history-section" aria-labelledby="history-title">
+        <div class="section-heading-row">
+          <div>
+            <p class="section-label">Your trail</p>
+            <h2 id="history-title">Recent catches</h2>
+          </div>
+          <button id="clear-history" class="text-button" type="button">Clear history</button>
+        </div>
+        <div id="history-grid" class="history-grid"></div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
