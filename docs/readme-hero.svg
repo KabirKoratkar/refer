@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title description">
+  <title id="title">Refer — catch the reference</title>
+  <desc id="description">A comic-inspired banner in acid yellow, cyan, pink, and purple.</desc>
+  <defs>
+    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2" fill="#09090B" opacity=".18"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="420" rx="18" fill="#F7F4EA"/>
+  <path d="M0 0h1200v72H0z" fill="#EFFF00"/>
+  <path d="M0 348h1200v72H0z" fill="#09090B"/>
+  <path d="M735 72h465v276H735z" fill="#6C2BFF"/>
+  <path d="M735 72h465v276H735z" fill="url(#dots)"/>
+  <path d="M55 107h142l12 12-12 12H55z" fill="#09090B"/>
+  <text x="69" y="125" fill="#FFFFFF" font-family="monospace" font-size="14" font-weight="700" letter-spacing="1">SIGNAL ONLINE</text>
+  <text x="52" y="214" fill="#09090B" font-family="Arial Black, Impact, sans-serif" font-size="96" font-weight="900" letter-spacing="-7">REFER</text>
+  <text x="54" y="260" fill="#09090B" font-family="monospace" font-size="21" font-weight="700" letter-spacing="1">CATCH THE SOURCE. GET THE JOKE.</text>
+  <rect x="53" y="288" width="470" height="8" fill="#00D9FF"/>
+  <circle cx="967" cy="210" r="112" fill="#09090B"/>
+  <circle cx="958" cy="201" r="112" fill="#EFFF00" stroke="#09090B" stroke-width="7"/>
+  <circle cx="958" cy="201" r="82" fill="#00D9FF" stroke="#09090B" stroke-width="4"/>
+  <path d="M923 184c0-28 17-48 39-48 24 0 41 19 41 44 0 20-9 29-25 39-11 7-15 14-15 27" fill="none" stroke="#09090B" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="963" cy="274" r="10" fill="#09090B"/>
+  <path d="M1084 99l8 19 19 8-19 8-8 19-8-19-19-8 19-8z" fill="#FF39B9" stroke="#09090B" stroke-width="3"/>
+  <path d="M799 283l7 16 16 7-16 7-7 16-7-16-16-7 16-7z" fill="#EFFF00"/>
+  <rect x="0" y="0" width="1200" height="420" rx="18" fill="none" stroke="#09090B" stroke-width="7"/>
+  <text x="52" y="393" fill="#FFFFFF" font-family="monospace" font-size="16" font-weight="700" letter-spacing="2">FILM · TV · BOOKS · MEMES · TIKTOK · GAMES</text>
+  <text x="1127" y="393" fill="#EFFF00" font-family="monospace" font-size="16" font-weight="700" text-anchor="end">V.01</text>
+</svg>
