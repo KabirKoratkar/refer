@@ -4,9 +4,7 @@ Refer is a voice-first reference finder for the moment someone quotes a movie, T
 
 ## Demo
 
-Open the live app: **https://refer-kabir.vercel.app/**
-
-GitHub Pages mirror: **https://kabirkoratkar.github.io/refer/**
+Open the live app: **https://kabirkoratkar.github.io/refer/**
 
 ## What it does
 
