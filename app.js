@@ -569,6 +569,9 @@ let sampleIndex = 0;
 let toastTimer = null;
 let lastMatchedTitle = "";
 let lastMatchedAt = 0;
+const SEARCH_API = location.hostname.endsWith("github.io")
+  ? "https://refer-kabir.vercel.app/api/search"
+  : "/api/search";
 
 function normalize(value) {
   return value
@@ -700,31 +703,34 @@ async function enrichReference(reference) {
   }
 }
 
-function wikipediaFallback(page, query) {
-  const firstSentence = page.extract?.split(/(?<=[.!?])\s/)[0] || "This may be the reference you heard. Open the source to confirm the context.";
-  return {
-    title: page.title,
-    source: "Wikipedia result",
-    medium: "Possible reference",
-    year: "",
-    quote: `You searched for “${query}”`,
-    explanation: firstSentence,
-    confidence: "Possible match",
-    thumbnail: page.thumbnail?.source || page.original?.source || "",
-    sourceUrl: page.fullurl || "",
-    wikiQuery: query,
-  };
-}
-
 function setLoading() {
   ui.emptyState.hidden = true;
   ui.resultContent.hidden = false;
   ui.resultContent.innerHTML = `
     <div class="loading-state">
-      <div><i data-lucide="loader-circle"></i><p>Connecting the dots...</p></div>
+      <div><i data-lucide="loader-circle"></i><p>Searching the web...</p></div>
     </div>
   `;
   refreshIcons();
+}
+
+async function searchWeb(query) {
+  const response = await fetch(`${SEARCH_API}?q=${encodeURIComponent(query)}`, { cache: "no-store" });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.results?.length) throw new Error(data.error || "Web search failed");
+  return data;
+}
+
+function buildSearchLinks(query) {
+  const encoded = encodeURIComponent(query);
+  return {
+    web: `https://www.google.com/search?q=${encoded}`,
+    images: `https://www.google.com/search?tbm=isch&q=${encoded}`,
+    reddit: `https://www.reddit.com/search/?q=${encoded}`,
+    tiktok: `https://www.tiktok.com/search?q=${encoded}`,
+    x: `https://x.com/search?q=${encoded}&src=typed_query`,
+    youtube: `https://www.youtube.com/results?search_query=${encoded}`,
+  };
 }
 
 async function resolveReference(input, options = {}) {
@@ -736,35 +742,43 @@ async function resolveReference(input, options = {}) {
   }
 
   let match = findCatalogMatch(query);
-
-  if (match) {
-    const isRecentDuplicate = match.title === lastMatchedTitle && Date.now() - lastMatchedAt < 8000;
-    if (isRecentDuplicate && options.fromSpeech) return;
-    setLoading();
-    match = await enrichReference(match);
-    renderResult(match);
-    lastMatchedTitle = match.title;
-    lastMatchedAt = Date.now();
-    return;
-  }
-
   const soundsLikeSocialReference = /\b(meme|tiktok|tick tock|trend|sound|audio|viral|giving|reminds? me|you know that)\b/i.test(query);
-  const cue = options.fromSpeech ? extractReferenceCue(query) || (soundsLikeSocialReference ? query : "") : query;
+  const cue = options.fromSpeech
+    ? match?.title || extractReferenceCue(query) || (soundsLikeSocialReference ? query : "")
+    : query;
+
   if (!cue) {
     if (!options.silentMiss) {
-      showEmptyMessage("No clear match yet. Try a longer part of the quote or name the meme.");
+      showEmptyMessage("No clear search phrase yet. Try a longer part of the reference.");
     }
     return;
   }
 
+  const duplicateKey = match?.title || cue;
+  if (options.fromSpeech && duplicateKey === lastMatchedTitle && Date.now() - lastMatchedAt < 8000) return;
+
   setLoading();
   try {
-    const pages = await searchWikipedia(`"${cue}" meme TikTok film television quote`);
-    if (!pages.length) throw new Error("No matches");
-    const result = wikipediaFallback(pages[0], cue);
-    renderResult(result);
+    const web = await searchWeb(cue);
+    const hasVerifiedSource = Boolean(match?.embedId || match?.clipUrl);
+
+    if (hasVerifiedSource) {
+      match = await enrichReference(match);
+      renderResult(match, web.results, web.searches);
+    } else {
+      renderWebResult(web, match);
+    }
+
+    lastMatchedTitle = duplicateKey;
+    lastMatchedAt = Date.now();
   } catch (error) {
-    showEmptyMessage("That one slipped past us. Try a title, a longer quote, or the creator's name.");
+    const searches = buildSearchLinks(cue);
+    if (match) {
+      match = await enrichReference(match);
+      renderResult(match, [], searches);
+    } else {
+      renderSearchFallback(cue, searches);
+    }
   }
 }
 
@@ -783,8 +797,79 @@ function getClipLabel(reference) {
   return "Search clips";
 }
 
+<<<<<<< HEAD
 function renderResult(reference) {
   document.body.classList.add("has-result");
+=======
+function renderWebResult(web, catalogMatch) {
+  const [top, ...related] = web.results;
+  const reference = {
+    title: catalogMatch?.title || top.title,
+    source: catalogMatch?.source || top.domain,
+    medium: catalogMatch?.medium || top.domain,
+    year: catalogMatch?.year || "Web match",
+    quote: catalogMatch?.quote || `“${web.query}”`,
+    explanation: catalogMatch?.explanation || top.snippet,
+    thumbnail: top.image || catalogMatch?.thumbnail || "",
+    sourceUrl: top.url,
+    clipUrl: top.url,
+    clipLabel: top.videoId ? "Play video" : "Open source",
+    embedId: top.videoId || "",
+    exact: false,
+  };
+
+  renderResult(reference, related, web.searches);
+}
+
+function renderSearchFallback(query, searches) {
+  renderResult({
+    title: `Search for “${query}”`,
+    source: "Across the web",
+    medium: "Web search",
+    year: "",
+    quote: `“${query}”`,
+    explanation: "Open one of the focused searches below to find the original post, image, discussion, or clip.",
+    sourceUrl: searches.web,
+    clipUrl: searches.web,
+    clipLabel: "Search the web",
+    exact: false,
+  }, [], searches);
+}
+
+function renderWebExtras(results = [], searches = {}) {
+  const resultCards = results.slice(0, 4).map((result) => `
+    <a class="web-result" href="${escapeHtml(result.url)}" target="_blank" rel="noopener noreferrer">
+      <span class="web-result-domain">${escapeHtml(result.domain || result.group || "Web")}</span>
+      <strong>${escapeHtml(result.title)}</strong>
+      <span>${escapeHtml(result.snippet || "Open result")}</span>
+      <i data-lucide="arrow-up-right"></i>
+    </a>
+  `).join("");
+
+  const labels = {
+    web: "Web",
+    images: "Images",
+    reddit: "Reddit",
+    tiktok: "TikTok",
+    x: "X",
+    youtube: "YouTube",
+  };
+  const searchLinks = Object.entries(searches).filter(([key, value]) => labels[key] && value).map(([key, value]) => `
+    <a href="${escapeHtml(value)}" target="_blank" rel="noopener noreferrer">${labels[key]}</a>
+  `).join("");
+
+  if (!resultCards && !searchLinks) return "";
+
+  return `
+    <section class="web-results" aria-label="More web results">
+      ${resultCards ? `<h3>More from the web</h3><div class="web-results-grid">${resultCards}</div>` : ""}
+      ${searchLinks ? `<div class="source-searches"><span>Search on</span>${searchLinks}</div>` : ""}
+    </section>
+  `;
+}
+
+function renderResult(reference, relatedResults = [], searches = {}) {
+>>>>>>> 55d9eb20ff820d518234c6b5ab26c7586ac6da47
   ui.emptyState.hidden = true;
   ui.resultContent.hidden = false;
   const sourceLink = reference.sourceUrl || `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(reference.wikiQuery || reference.title)}`;
@@ -841,6 +926,7 @@ function renderResult(reference) {
         </a>
       </div>
     </div>
+    ${renderWebExtras(relatedResults, searches)}
   `;
   refreshIcons();
 }

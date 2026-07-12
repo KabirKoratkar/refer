@@ -1,5 +1,5 @@
-const CACHE_NAME = "refer-v3";
-const APP_SHELL = ["./", "./index.html", "./styles.css?v=3", "./app.js?v=3", "./manifest.webmanifest"];
+const CACHE_NAME = "refer-v6";
+const APP_SHELL = ["./", "./index.html", "./styles.css?v=6", "./app.js?v=6", "./manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
@@ -13,6 +13,7 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
+  if (new URL(event.request.url).pathname.startsWith("/api/")) return;
   event.respondWith(
     fetch(event.request)
       .then((response) => {
