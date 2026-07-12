@@ -558,6 +558,7 @@ const ui = {
   resultContent: document.querySelector("#result-content"),
   supportNote: document.querySelector("#support-note"),
   toast: document.querySelector("#toast"),
+  aboutButton: document.querySelector("#about-button"),
 };
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -783,6 +784,7 @@ function getClipLabel(reference) {
 }
 
 function renderResult(reference) {
+  document.body.classList.add("has-result");
   ui.emptyState.hidden = true;
   ui.resultContent.hidden = false;
   const sourceLink = reference.sourceUrl || `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(reference.wikiQuery || reference.title)}`;
@@ -851,16 +853,21 @@ function showEmptyMessage(message) {
 
 function setListening(nextState) {
   isListening = nextState;
+  document.body.classList.toggle("is-listening", nextState);
   ui.listenButton.classList.toggle("listening", nextState);
   ui.waveform.classList.toggle("active", nextState);
   ui.liveBadge.classList.toggle("listening", nextState);
-  ui.listenButtonLabel.textContent = nextState ? "Stop" : "Listen";
+  const listenLabel = ui.listenButton.querySelector("strong");
+  const listenHint = ui.listenButton.querySelector("small");
+  if (listenLabel) listenLabel.textContent = nextState ? "HEARING" : "LISTEN";
+  if (listenHint) listenHint.textContent = nextState ? "TAP TO STOP" : "TAP TO START";
   ui.liveLabel.textContent = nextState ? "Live" : "Ready";
   ui.listenButton.title = nextState ? "Stop listening" : "Start listening";
   ui.listenButton.querySelector("svg")?.remove();
   const icon = document.createElement("i");
-  icon.dataset.lucide = nextState ? "square" : "mic";
-  ui.listenButton.prepend(icon);
+  icon.dataset.lucide = nextState ? "audio-waveform" : "ear";
+  const coreGlow = ui.listenButton.querySelector(".core-glow");
+  coreGlow?.insertAdjacentElement("afterend", icon);
   refreshIcons();
 }
 
@@ -967,6 +974,9 @@ ui.clearButton.addEventListener("click", clearTranscript);
 ui.searchButton.addEventListener("click", () => resolveReference(ui.searchInput.value));
 ui.searchInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") resolveReference(ui.searchInput.value);
+});
+ui.aboutButton?.addEventListener("click", () => {
+  showToast("Tap LISTEN or type the line. Refer matches it to the source and explains the context.");
 });
 
 setupRecognition();

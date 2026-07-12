@@ -3,88 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f5f3ee" />
-    <meta
-      name="description"
-      content="Refer listens for movie, TV, book, meme, and TikTok references and pulls up the source."
-    />
-    <title>Refer - Get the reference</title>
+    <meta name="theme-color" content="#f3ff00" />
+    <meta name="description" content="Refer listens for the references flying over your head and catches the source." />
+    <title>Refer — Catch the reference</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css?v=3" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=4" />
     <link rel="manifest" href="manifest.webmanifest" />
   </head>
   <body>
+    <div class="noise" aria-hidden="true"></div>
     <header class="topbar">
       <a class="brand" href="#" aria-label="Refer home">
-        <span class="brand-mark" aria-hidden="true"><i data-lucide="audio-lines"></i></span>
-        <span>Refer<span class="brand-dot">.</span></span>
+        <span class="brand-burst" aria-hidden="true">R!</span>
+        <span class="brand-word">REFER</span>
       </a>
-      <a
-        class="icon-button"
-        href="https://github.com/KabirKoratkar/refer"
-        aria-label="Open project on GitHub"
-        title="Open GitHub repository"
-      >
-        <i data-lucide="github"></i>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="active" href="#catch">CATCH</a>
+        <a href="#result-panel">RECENTS</a>
+        <button id="about-button" type="button">HOW IT WORKS</button>
+      </nav>
+      <a class="github-button" href="https://github.com/KabirKoratkar/refer" aria-label="Open project on GitHub" title="Open GitHub repository">
+        <span>GITHUB</span><i data-lucide="arrow-up-right"></i>
       </a>
     </header>
 
-    <main class="app-shell">
-      <section class="capture" aria-labelledby="page-title">
-        <div class="capture-heading">
-          <div>
-            <p class="eyebrow">Live reference finder</p>
-            <h1 id="page-title">What did they mean?</h1>
+    <main id="catch" class="app-shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <div class="channel-tag"><span></span> LIVE REFERENCE FINDER <b>V.01</b></div>
+          <h1 id="page-title">WAIT—WHAT<br />WAS <em>THAT?</em></h1>
+          <p class="dek">Catch the quotes, memes, and internet lore flying over your head. We listen. We find it. You stay in the conversation.</p>
+          <div class="how-row">
+            <span class="arrow-doodle" aria-hidden="true">↳</span>
+            <div><b>01</b><span>SAY IT<br />OR TYPE IT</span></div>
+            <div><b>02</b><span>WE HUNT<br />THE SOURCE</span></div>
+            <div><b>03</b><span>YOU GET<br />THE JOKE</span></div>
           </div>
-          <div id="live-badge" class="live-badge"><span></span><span id="live-label">Ready</span></div>
         </div>
 
+        <div class="listen-stage">
+          <div class="orbital-copy top">ROOM AUDIO // SIGNAL READY</div>
+          <div class="orbit orbit-one" aria-hidden="true"></div>
+          <div class="orbit orbit-two" aria-hidden="true"></div>
+          <button id="listen-button" class="listen-core" type="button" title="Start listening">
+            <span class="core-glow"></span>
+            <i data-lucide="ear"></i>
+            <strong>LISTEN</strong>
+            <small>TAP TO START</small>
+          </button>
+          <span class="spark spark-one" aria-hidden="true">✦</span>
+          <span class="spark spark-two" aria-hidden="true">✦</span>
+          <span class="spark spark-three" aria-hidden="true">+</span>
+          <div id="live-badge" class="live-badge"><span></span><span id="live-label">STANDBY</span></div>
+          <div class="orbital-copy bottom">PRIVATE BY DEFAULT // MIC ONLY WHEN ON</div>
+        </div>
+      </section>
+
+      <section class="capture" aria-label="Reference search">
+        <span class="capture-label">DROP THE LINE HERE</span>
         <div class="capture-bar" role="search">
-          <i data-lucide="search" aria-hidden="true"></i>
+          <span class="prompt-mark" aria-hidden="true">“</span>
           <label class="sr-only" for="reference-search">Search a quote or reference</label>
-          <input
-            id="reference-search"
-            type="search"
-            placeholder="Say or type a quote, meme, or TikTok sound"
-            autocomplete="off"
-          />
-          <button id="listen-button" class="mic-button" type="button" title="Start listening">
-            <i data-lucide="mic"></i><span>Listen</span>
-          </button>
+          <input id="reference-search" type="search" placeholder="type a quote, meme, or TikTok sound..." autocomplete="off" />
           <button id="search-button" class="find-button" type="button" aria-label="Find reference" title="Find reference">
-            <i data-lucide="arrow-right"></i>
+            <span>CATCH IT</span><i data-lucide="arrow-right"></i>
           </button>
         </div>
-
         <div class="transcript-row" aria-live="polite">
-          <div id="waveform" class="mini-wave" aria-hidden="true"><span></span><span></span><span></span></div>
-          <p id="transcript">Listening is off. Type above or turn it on.</p>
-          <button id="clear-button" class="clear-button" type="button" aria-label="Clear transcript" title="Clear transcript">
-            <i data-lucide="x"></i>
-          </button>
+          <div id="waveform" class="mini-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <p id="transcript">Listening is off. Type above or tap the signal.</p>
+          <button id="clear-button" class="clear-button" type="button" aria-label="Clear transcript" title="Clear transcript"><i data-lucide="x"></i></button>
         </div>
-
-        <button id="sample-button" class="demo-button" type="button">Try a demo reference</button>
-        <p id="support-note" class="support-note" hidden></p>
+        <div class="capture-foot">
+          <button id="sample-button" class="demo-button" type="button"><i data-lucide="shuffle"></i> SURPRISE ME</button>
+          <p id="support-note" class="support-note" hidden></p>
+          <span>FILM · TV · BOOKS · MEMES · TIKTOK · GAMES</span>
+        </div>
       </section>
 
       <section id="result-panel" class="result-panel" aria-live="polite">
+        <div class="panel-kicker"><span>REFERENCE FEED</span><b>CH. 01</b></div>
         <div id="empty-state" class="empty-state">
-          <i data-lucide="captions"></i>
-          <p>Movie, show, book, meme, and TikTok references will appear here.</p>
+          <div class="empty-bubble"><i data-lucide="captions"></i><strong>YOUR CATCH<br />LANDS HERE</strong></div>
+          <p>Say the thing you heard—even if you only remember half of it.</p>
         </div>
         <div id="result-content" class="result-content" hidden></div>
       </section>
     </main>
 
+    <footer class="footer-strip" aria-hidden="true">
+      <span>REFER // CULTURE DECODER</span><span>NO MORE FAKE LAUGHS</span><span>★ SIGNAL ONLINE ★</span>
+    </footer>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-    <script src="app.js?v=3"></script>
+    <script src="app.js?v=4"></script>
   </body>
 </html>
