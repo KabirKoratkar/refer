@@ -1,5 +1,13 @@
 const SEARCH_URL = "https://r.jina.ai/http://www.bing.com/search";
+const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MAX_QUERY_LENGTH = 180;
+const SOCIAL_DOMAINS = [
+  "tiktok.com",
+  "x.com",
+  "twitter.com",
+  "knowyourmeme.com",
+  "youtube.com",
+];
 
 function decodeEntities(value = "") {
   const named = {
@@ -42,7 +50,7 @@ function classifyUrl(value) {
     if (host.endsWith("reddit.com")) return "Reddit";
     if (host === "x.com" || host.endsWith("twitter.com")) return "X post";
     if (host.endsWith("instagram.com")) return "Instagram";
-    if (host.endsWith("knowyourmeme.com")) return "Meme source";
+    if (/knowyourmeme\.com$|giphy\.com$|tenor\.com$|imgflip\.com$|memedroid\.com$/i.test(host)) return "Meme source";
     return host;
   } catch (error) {
     return "Web";
@@ -147,18 +155,180 @@ function uniqueResults(groups) {
 }
 
 function resultScore(result) {
+  if (/tiktok\.com\/@[^/]+\/video\/\d+/i.test(result.url)) return 130;
+  if (/(?:x\.com|twitter\.com)\/[^/]+\/status\/\d+/i.test(result.url)) return 128;
+  if (result.videoId) return 125;
+
   const scores = {
+    TikTok: 110,
+    "X post": 108,
+    Video: 106,
     "Meme source": 100,
-    Video: 90,
-    TikTok: 85,
-    Reddit: 82,
-    "X post": 80,
-    Instagram: 78,
+    Instagram: 90,
+    Reddit: 88,
   };
   if (scores[result.domain]) return scores[result.domain];
-  if (/wikipedia\.org$/i.test(result.domain)) return 76;
-  if (/digitalcultures\.net$/i.test(result.domain)) return 72;
+  if (/digitalcultures\.net$/i.test(result.domain)) return 76;
   return 50;
+}
+
+function isSocialResult(result) {
+  if (["Meme source", "TikTok", "X post", "Reddit", "Instagram", "Video"].includes(result.domain)) return true;
+  return /digitalcultures\.net$|memes\.com$|kym-cdn\.com$/i.test(result.domain);
+}
+
+function cleanQuery(value) {
+  const display = value
+    .replace(/^[\s"'“”‘’]+|[\s"'“”‘’]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const search = display.replace(/#/g, "").trim();
+  return { display, search };
+}
+
+function getSearchLinks(query) {
+  return {
+    memes: `https://www.google.com/search?q=${encodeURIComponent(`${query} meme`)}`,
+    tiktok: `https://www.tiktok.com/search?q=${encodeURIComponent(query)}`,
+    x: `https://x.com/search?q=${encodeURIComponent(query)}&src=typed_query`,
+  };
+}
+
+function parseJsonText(value = "") {
+  const cleaned = value.replace(/^```(?:json)?\s*|\s*```$/gi, "").trim();
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start < 0 || end <= start) return null;
+
+  try {
+    return JSON.parse(cleaned.slice(start, end + 1));
+  } catch (error) {
+    return null;
+  }
+}
+
+function collectClaudeSources(content = []) {
+  const sources = [];
+
+  content.forEach((block) => {
+    if (block.type === "web_search_tool_result" && Array.isArray(block.content)) {
+      block.content.forEach((result) => {
+        if (result.type === "web_search_result" && result.url) {
+          sources.push({ title: result.title || "Social result", url: result.url, snippet: "" });
+        }
+      });
+    }
+
+    if (block.type === "text" && Array.isArray(block.citations)) {
+      block.citations.forEach((citation) => {
+        if (citation.type === "web_search_result_location" && citation.url) {
+          sources.push({
+            title: citation.title || "Social result",
+            url: citation.url,
+            snippet: cleanText(citation.cited_text || ""),
+          });
+        }
+      });
+    }
+  });
+
+  return uniqueResults([sources.map((source) => ({
+    ...source,
+    domain: classifyUrl(source.url),
+    group: "Claude web search",
+    videoId: getYouTubeId(source.url),
+    image: "",
+  }))]).filter(isSocialResult);
+}
+
+function normalizeClaudeResults(message) {
+  const text = (message.content || [])
+    .filter((block) => block.type === "text")
+    .map((block) => block.text)
+    .join("");
+  const parsed = parseJsonText(text);
+  const cited = collectClaudeSources(message.content);
+  const sourceByUrl = new Map(cited.map((result) => [result.url.replace(/\/$/, ""), result]));
+
+  const modelResults = Array.isArray(parsed?.results) ? parsed.results : [];
+  const normalized = modelResults.map((result) => {
+    const url = absoluteUrl(String(result.url || ""));
+    if (!url) return null;
+    const citedResult = sourceByUrl.get(url.replace(/\/$/, ""));
+    const videoId = getYouTubeId(url);
+    return {
+      title: cleanText(String(result.title || citedResult?.title || "Social result")),
+      snippet: cleanText(String(result.snippet || citedResult?.snippet || "Open the source to see the reference.")),
+      url,
+      domain: classifyUrl(url),
+      group: "Claude web search",
+      videoId,
+      image: videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : "",
+    };
+  }).filter(Boolean).filter(isSocialResult);
+
+  return uniqueResults([normalized, cited])
+    .sort((a, b) => resultScore(b) - resultScore(a))
+    .slice(0, 6);
+}
+
+async function requestClaude(messages) {
+  const apiResponse = await fetch(ANTHROPIC_URL, {
+    method: "POST",
+    headers: {
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json",
+      "x-api-key": process.env.ANTHROPIC_API_KEY,
+    },
+    body: JSON.stringify({
+      model: "claude-sonnet-5",
+      max_tokens: 1200,
+      system: "You identify internet references. Search live social and meme sources, not encyclopedias. Prefer the original post or exact clip over pages discussing it. Never invent a URL.",
+      messages,
+      tools: [{
+        type: "web_search_20250305",
+        name: "web_search",
+        max_uses: 2,
+        allowed_domains: SOCIAL_DOMAINS,
+        user_location: {
+          type: "approximate",
+          country: "US",
+          timezone: "America/Los_Angeles",
+        },
+      }],
+    }),
+    signal: AbortSignal.timeout(25000),
+  });
+
+  if (!apiResponse.ok) throw new Error("Reference search unavailable");
+  return apiResponse.json();
+}
+
+async function searchWithClaude(query) {
+  const prompt = `Search the web to identify this reference: "${query}".
+
+Treat it as an internet-culture lookup, not a dictionary lookup. Search using the phrase plus terms such as meme, TikTok, Twitter, X, viral, sound, or quote. Prioritize, in order:
+1. the original TikTok or X/Twitter post;
+2. the exact YouTube clip;
+3. a Know Your Meme origin page;
+4. a strong meme explainer when the original post is not indexed.
+
+Return only valid JSON with this shape:
+{"results":[{"title":"recognizable reference name","url":"direct URL from your search results","snippet":"one short sentence saying what it is and where it came from"}]}
+Include up to five ranked results. Do not return Wikipedia or a generic page about quotation marks, hashtags, or individual words.`;
+  const messages = [{ role: "user", content: prompt }];
+  let message = await requestClaude(messages);
+
+  if (message.stop_reason === "pause_turn") {
+    message = await requestClaude([...messages, { role: "assistant", content: message.content }]);
+  }
+
+  return normalizeClaudeResults(message);
+}
+
+async function searchWithoutClaude(query) {
+  const results = await runSearch(`${query} meme TikTok Twitter viral`, "Social");
+  return uniqueResults([results]).filter(isSocialResult).sort((a, b) => resultScore(b) - resultScore(a));
 }
 
 module.exports = async function handler(request, response) {
@@ -169,37 +339,38 @@ module.exports = async function handler(request, response) {
   if (request.method === "OPTIONS") return response.status(204).end();
   if (request.method !== "GET") return response.status(405).json({ error: "Method not allowed" });
 
-  const query = String(request.query.q || "").trim().slice(0, MAX_QUERY_LENGTH);
-  if (query.length < 2) return response.status(400).json({ error: "Enter a longer reference" });
+  const rawQuery = String(request.query.q || "").trim().slice(0, MAX_QUERY_LENGTH);
+  const query = cleanQuery(rawQuery);
+  if (query.search.length < 2) return response.status(400).json({ error: "Enter a longer reference" });
 
-  const searches = [[`"${query}" reference origin meme quote`, "Web"]];
-
-  const settled = await Promise.allSettled(searches.map(([value, group]) => runSearch(value, group)));
-  const results = uniqueResults(settled.filter((item) => item.status === "fulfilled").map((item) => item.value))
-    .sort((a, b) => resultScore(b) - resultScore(a));
+  let results = [];
+  try {
+    results = process.env.ANTHROPIC_API_KEY
+      ? await searchWithClaude(query.search)
+      : await searchWithoutClaude(query.search);
+  } catch (error) {
+    try {
+      results = await searchWithoutClaude(query.search);
+    } catch (fallbackError) {
+      results = [];
+    }
+  }
 
   if (!results.length) {
     return response.status(502).json({ error: "No indexed sources found", results: [] });
   }
 
-  if (results[0].domain === "Meme source") {
-    const explanatoryResult = results.find((result) => /\b(is a|refers to|comes from|famous quote)\b/i.test(result.snippet));
-    if (explanatoryResult) results[0].snippet = explanatoryResult.snippet;
+  const explanatoryResult = results.find((result) => result.domain === "Meme source" && result.snippet);
+  if (!results[0].snippet) {
+    results[0].snippet = explanatoryResult?.snippet || "Open the original post to see this reference in context.";
   }
 
   results[0].image = await findPreviewImage(results[0]);
 
   response.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=3600");
   return response.status(200).json({
-    query,
+    query: query.display,
     results,
-    searches: {
-      web: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-      images: `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(query)}`,
-      reddit: `https://www.reddit.com/search/?q=${encodeURIComponent(query)}`,
-      tiktok: `https://www.tiktok.com/search?q=${encodeURIComponent(query)}`,
-      x: `https://x.com/search?q=${encodeURIComponent(query)}&src=typed_query`,
-      youtube: `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`,
-    },
+    searches: getSearchLinks(query.display),
   });
 };
