@@ -569,6 +569,7 @@ let sampleIndex = 0;
 let toastTimer = null;
 let lastMatchedTitle = "";
 let lastMatchedAt = 0;
+let activeSearchController = null;
 const SEARCH_API = location.hostname.endsWith("github.io")
   ? "https://refer-kabir.vercel.app/api/search"
   : "/api/search";
@@ -596,19 +597,30 @@ function escapeHtml(value = "") {
   })[character]);
 }
 
+const catalogIndex = references.map((reference) => ({
+  reference,
+  phrases: [...reference.phrases, reference.title, reference.source]
+    .map((phrase) => normalize(phrase))
+    .filter(Boolean),
+  fuzzyPhrases: reference.phrases
+    .map((phrase) => normalize(phrase).split(" ").filter(Boolean))
+    .filter((tokens) => tokens.length > 1),
+}));
+
 function findCatalogMatch(input) {
   const normalized = normalize(input);
   if (!normalized) return null;
+  const inputTokens = normalized.split(" ").filter(Boolean);
 
-  const directMatches = references.flatMap((reference) =>
-    [...reference.phrases, reference.title, reference.source].map((phrase) => ({
+  const directMatches = catalogIndex.flatMap(({ reference, phrases }) =>
+    phrases.map((phrase) => ({
       reference,
-      phrase: normalize(phrase),
+      phrase,
     }))
   ).filter(({ phrase }) => {
     if (!phrase || !normalized.includes(phrase)) return false;
     const phraseWords = phrase.split(" ").length;
-    return phraseWords > 1 || normalized.split(" ").length <= 7;
+    return phraseWords > 1 || inputTokens.length <= 7;
   }).sort((a, b) => b.phrase.length - a.phrase.length);
 
   if (directMatches[0]) return { ...directMatches[0].reference, confidence: "Strong match" };
@@ -616,12 +628,8 @@ function findCatalogMatch(input) {
   let bestReference = null;
   let bestScore = 0;
 
-  references.forEach((reference) => {
-    reference.phrases.forEach((phrase) => {
-      const phraseTokens = normalize(phrase).split(" ").filter(Boolean);
-      if (phraseTokens.length < 2) return;
-
-      const inputTokens = normalized.split(" ").filter(Boolean);
+  catalogIndex.forEach(({ reference, fuzzyPhrases }) => {
+    fuzzyPhrases.forEach((phraseTokens) => {
       const windowSizes = [phraseTokens.length - 1, phraseTokens.length, phraseTokens.length + 1]
         .filter((size) => size > 0);
 
@@ -714,8 +722,8 @@ function setLoading() {
   refreshIcons();
 }
 
-async function searchWeb(query) {
-  const response = await fetch(`${SEARCH_API}?q=${encodeURIComponent(query)}`, { cache: "no-store" });
+async function searchWeb(query, signal) {
+  const response = await fetch(`${SEARCH_API}?q=${encodeURIComponent(query)}`, { cache: "no-store", signal });
   const data = await response.json().catch(() => ({}));
   if (!response.ok || !data.results?.length) throw new Error(data.error || "Web search failed");
   return data;
@@ -755,9 +763,12 @@ async function resolveReference(input, options = {}) {
   const duplicateKey = match?.title || cue;
   if (options.fromSpeech && duplicateKey === lastMatchedTitle && Date.now() - lastMatchedAt < 8000) return;
 
+  activeSearchController?.abort();
+  const searchController = new AbortController();
+  activeSearchController = searchController;
   setLoading();
   try {
-    const web = await searchWeb(cue);
+    const web = await searchWeb(cue, searchController.signal);
     const hasVerifiedSource = Boolean(match?.embedId || match?.clipUrl);
 
     if (hasVerifiedSource) {
@@ -770,6 +781,7 @@ async function resolveReference(input, options = {}) {
     lastMatchedTitle = duplicateKey;
     lastMatchedAt = Date.now();
   } catch (error) {
+    if (error.name === "AbortError") return;
     const searches = buildSearchLinks(cue);
     if (match) {
       match = await enrichReference(match);
@@ -777,6 +789,8 @@ async function resolveReference(input, options = {}) {
     } else {
       renderSearchFallback(cue, searches);
     }
+  } finally {
+    if (activeSearchController === searchController) activeSearchController = null;
   }
 }
 
