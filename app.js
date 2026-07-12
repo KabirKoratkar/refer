@@ -795,10 +795,6 @@ function getClipLabel(reference) {
   return "Search clips";
 }
 
-<<<<<<< HEAD
-function renderResult(reference) {
-  document.body.classList.add("has-result");
-=======
 function renderWebResult(web, catalogMatch) {
   const [top, ...related] = web.results;
   const reference = {
@@ -864,7 +860,6 @@ function renderWebExtras(results = [], searches = {}) {
 }
 
 function renderResult(reference, relatedResults = [], searches = {}) {
->>>>>>> 55d9eb20ff820d518234c6b5ab26c7586ac6da47
   ui.emptyState.hidden = true;
   ui.resultContent.hidden = false;
   const sourceLink = reference.sourceUrl || `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(reference.wikiQuery || reference.title)}`;

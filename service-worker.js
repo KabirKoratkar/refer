@@ -1,5 +1,5 @@
-const CACHE_NAME = "refer-v6";
-const APP_SHELL = ["./", "./index.html", "./styles.css?v=6", "./app.js?v=6", "./manifest.webmanifest"];
+const CACHE_NAME = "refer-v7";
+const APP_SHELL = ["./", "./index.html", "./styles.css?v=7", "./app.js?v=7", "./manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
