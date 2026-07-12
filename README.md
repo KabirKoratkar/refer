@@ -4,13 +4,17 @@ Refer is a voice-first reference finder for the moment someone quotes a movie, T
 
 ## Demo
 
-Open the live app: **https://kabirkoratkar.github.io/refer/**
+Open the live app: **https://refer-kabir.vercel.app/**
+
+GitHub Pages mirror: **https://kabirkoratkar.github.io/refer/**
 
 ## What it does
 
 - Listens to a conversation through the browser's built-in speech recognition
 - Detects well-known quotes, catchphrases, memes, and social trends
 - Pulls up an exact clip or original post when one is known
+- Searches the live web for unknown references and ranks meme sources and videos first
+- Provides focused follow-up searches for Reddit, TikTok, X, YouTube, images, and the wider web
 - Shows the source, meaning, date, artwork, and context
 - Supports typed searches for quieter rooms and unsupported browsers
 - Installs as a lightweight PWA and only starts the microphone when the user turns listening on
@@ -28,7 +32,7 @@ Then open http://localhost:4173 in Chrome, Edge, or Safari.
 
 ## How it works
 
-The MVP combines a curated pop-culture phrase catalog with browser speech recognition. Rolling transcript matching catches phrases split across speech chunks, while a source lookup enriches matches with artwork and context. Known references point to exact clips or original posts; unknown typed references fall back to a broader source search.
+The MVP combines browser speech recognition with a server-side web search. Rolling transcript matching catches phrases split across speech chunks. Search results are ranked to favor meme origins, videos, and social sources, with preview artwork pulled from the strongest result. The curated catalog remains only as a fast path for verified exact clips.
 
 ## Hackathon roadmap
 
