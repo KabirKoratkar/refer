@@ -22,17 +22,17 @@ GitHub Pages mirror: **https://kabirkoratkar.github.io/refer/**
 
 ## Run locally
 
-No build step or API key is required.
+No search API key is required. Run the app and its serverless search route together with the Vercel CLI:
 
 ```bash
-python3 -m http.server 4173
+vercel dev --listen 4173
 ```
 
 Then open http://localhost:4173 in Chrome, Edge, or Safari.
 
 ## How it works
 
-The MVP combines browser speech recognition with a server-side web search. Rolling transcript matching catches phrases split across speech chunks. Search results are ranked to favor meme origins, videos, and social sources, with preview artwork pulled from the strongest result. The curated catalog remains only as a fast path for verified exact clips.
+The MVP combines browser speech recognition with the serverless route in `api/search.js`. Rolling transcript matching catches phrases split across speech chunks. Search results are ranked to favor meme origins, videos, and social sources, with preview artwork pulled from the strongest result. The curated catalog remains only as a fast path for verified exact clips.
 
 ## Hackathon roadmap
 
