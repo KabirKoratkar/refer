@@ -1,6 +1,6 @@
 {
-  "name": "CatchThat - Reference Finder",
-  "short_name": "CatchThat",
+  "name": "Refer - Live Reference Finder",
+  "short_name": "Refer",
   "description": "Hear a pop-culture reference and get the context in real time.",
   "start_url": "./",
   "display": "standalone",

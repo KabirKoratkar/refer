@@ -31,6 +31,7 @@ const references = [
     explanation: "Gandalf's stand against the Balrog. People use it for any firm or playfully overdramatic refusal.",
     wikiQuery: "You Shall Not Pass Gandalf",
     thumbnail: "https://image.tmdb.org/t/p/w780/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg",
+    embedId: "3bReJswiMGM",
   },
   {
     title: "Winter is coming",
@@ -61,6 +62,7 @@ const references = [
     phrases: ["that's what she said", "thats what she said"],
     explanation: "A running Michael Scott joke that turns an innocent sentence into an innuendo.",
     wikiQuery: "That's what she said The Office",
+    clipUrl: "https://clip.cafe/the-office-2005/thats-what-she/",
   },
   {
     title: "We were on a break",
@@ -178,6 +180,7 @@ const references = [
     explanation: "Cady solves the final Mathletes problem and realizes she does not need to limit herself either. It is both a calculus answer and a triumphant punchline.",
     wikiQuery: "The limit does not exist Mean Girls",
     thumbnail: "https://image.tmdb.org/t/p/w780/fXm3YKXAEjx7d2tIWDg9TfRZtsU.jpg",
+    clipUrl: "https://clip.cafe/mean-girls-2004/the-limit-does-not-exist/",
   },
   {
     title: "I am the danger",
@@ -188,6 +191,7 @@ const references = [
     phrases: ["i am the danger", "i am the one who knocks", "i'm the one who knocks"],
     explanation: "Walter White insists he is no longer a victim but the threat itself. It is quoted for an outsized show of confidence.",
     wikiQuery: "I am the danger Breaking Bad",
+    clipUrl: "https://www.rottentomatoes.com/tv/breaking_bad/videos/e89VCQr_2eKl",
   },
   {
     title: "No soup for you",
@@ -198,6 +202,7 @@ const references = [
     phrases: ["no soup for you"],
     explanation: "The Soup Nazi refuses service to customers who break his strict ordering rules. It is a mock-stern way to deny someone something.",
     wikiQuery: "No soup for you Seinfeld",
+    clipUrl: "https://clip.cafe/seinfeld-1989/i-didnt-get-any-bread-just-forget-it-let-go/",
   },
   {
     title: "Big Brother is watching you",
@@ -228,6 +233,8 @@ const references = [
     phrases: ["this is fine"],
     explanation: "A dog calmly drinks coffee while the room burns. The meme captures pretending everything is okay during obvious disaster.",
     wikiQuery: "This Is Fine meme",
+    clipUrl: "https://gunshowcomic.com/648",
+    clipLabel: "Open original comic",
   },
   {
     title: "Very demure, very mindful",
@@ -238,6 +245,8 @@ const references = [
     phrases: ["very demure very mindful", "very demure", "very mindful"],
     explanation: "Jools Lebron's playful description of being restrained and considerate became a way to label almost any behavior as tastefully low-key.",
     wikiQuery: "Very demure very mindful Jools Lebron",
+    clipUrl: "https://www.tiktok.com/@joolieannie",
+    clipLabel: "Open original creator",
   },
   {
     title: "Girl dinner",
@@ -269,6 +278,265 @@ const references = [
     explanation: "Playful internet shorthand for 'delusion is the solution': acting as if your optimistic fantasy will become real.",
     wikiQuery: "Delulu internet slang",
   },
+  {
+    title: "It's corn",
+    source: "Corn Kid / Recess Therapy",
+    medium: "TikTok sound",
+    year: "2022",
+    quote: "It's corn! A big lump with knobs. It has the juice.",
+    phrases: ["it's corn", "its corn", "a big lump with knobs", "it has the juice", "corn kid"],
+    explanation: "Tariq's enthusiastic interview about corn was remixed into a viral song and TikTok sound.",
+    wikiQuery: "Corn Kid It's Corn meme",
+    clipUrl: "https://www.youtube.com/watch?v=1VbZE6YhjKk",
+    clipLabel: "Play original interview",
+    embedId: "1VbZE6YhjKk",
+  },
+  {
+    title: "Looking for a man in finance",
+    source: "Megan Boni / @girl_on_couch",
+    medium: "TikTok sound",
+    year: "2024",
+    quote: "I'm looking for a man in finance, trust fund, 6'5\", blue eyes.",
+    phrases: ["looking for a man in finance", "man in finance", "trust fund six five blue eyes", "six five blue eyes"],
+    explanation: "Megan Boni's improvised parody of hyper-specific dating standards became a remixed TikTok anthem.",
+    wikiQuery: "Looking for a Man in Finance TikTok",
+    clipUrl: "https://www.tiktok.com/@girl_on_couch",
+    clipLabel: "Open original creator",
+  },
+  {
+    title: "Hawk tuah",
+    source: "Haliey Welch street interview",
+    medium: "TikTok meme",
+    year: "2024",
+    quote: "Hawk tuah.",
+    phrases: ["hawk tuah", "hawk tua", "spit on that thing"],
+    explanation: "A response from a viral Nashville street interview that became a widely remixed catchphrase.",
+    wikiQuery: "Hawk Tuah meme",
+  },
+  {
+    title: "Bombastic side eye",
+    source: "TikTok reaction sound",
+    medium: "TikTok sound",
+    year: "2022",
+    quote: "Bombastic side eye. Criminal offensive side eye.",
+    phrases: ["bombastic side eye", "criminal offensive side eye", "side eye"],
+    explanation: "A dramatic audio reaction used when someone says or does something suspicious, awkward, or out of line.",
+    wikiQuery: "Bombastic side eye TikTok meme",
+  },
+  {
+    title: "Oh no, our table",
+    source: "America's Funniest Home Videos clip",
+    medium: "TikTok sound",
+    year: "2021",
+    quote: "Oh no! Our table! It's broken!",
+    phrases: ["oh no our table", "our table it's broken", "our table is broken"],
+    explanation: "A child's calm reaction to a glass table collapsing became a TikTok sound for predictable disasters.",
+    wikiQuery: "Oh No Our Table It's Broken meme",
+    clipUrl: "https://knowyourmeme.com/memes/oh-no-our-table-its-broken",
+    clipLabel: "Open original clip",
+  },
+  {
+    title: "Ice cream so good",
+    source: "Pinkydoll NPC livestreams",
+    medium: "TikTok Live",
+    year: "2023",
+    quote: "Ice cream so good. Gang gang. Yes yes yes.",
+    phrases: ["ice cream so good", "gang gang yes yes yes", "npc livestream", "npc live"],
+    explanation: "Pinkydoll repeated scripted reactions to virtual gifts, popularizing the NPC livestream format.",
+    wikiQuery: "Pinkydoll ice cream so good NPC livestream",
+    clipUrl: "https://www.tiktok.com/@pinkydollreal",
+    clipLabel: "Open original creator",
+  },
+  {
+    title: "Girl math",
+    source: "TikTok trend",
+    medium: "TikTok",
+    year: "2023",
+    quote: "That's girl math.",
+    phrases: ["girl math", "basically free", "if i pay cash it's free", "if i return it i made money"],
+    explanation: "A joking system of logic that reframes spending decisions, like treating cash purchases or refunds as free money.",
+    wikiQuery: "Girl math TikTok trend",
+  },
+  {
+    title: "Aura points",
+    source: "TikTok slang",
+    medium: "TikTok",
+    year: "2024",
+    quote: "Minus aura points.",
+    phrases: ["aura points", "minus aura", "lost aura", "infinite aura"],
+    explanation: "An imaginary score for how cool, confident, or embarrassing someone looks in a moment.",
+    wikiQuery: "Aura points TikTok slang",
+  },
+  {
+    title: "Beige flag",
+    source: "TikTok dating trend",
+    medium: "TikTok",
+    year: "2023",
+    quote: "That's a beige flag.",
+    phrases: ["beige flag", "his beige flag", "her beige flag"],
+    explanation: "A partner's harmless but oddly specific habit: not a red flag, not a green flag, just memorable.",
+    wikiQuery: "Beige flag TikTok trend",
+  },
+  {
+    title: "Holding space for Defying Gravity",
+    source: "Wicked press interview",
+    medium: "Viral interview",
+    year: "2024",
+    quote: "People are taking the lyrics of Defying Gravity and really holding space with that.",
+    phrases: ["holding space for defying gravity", "holding space with that", "people are taking the lyrics"],
+    explanation: "A sincere Wicked interview exchange became a meme because the phrase felt unusually intense and abstract.",
+    wikiQuery: "Holding space Defying Gravity meme interview",
+  },
+  {
+    title: "Chill guy",
+    source: "Phillip Banks character",
+    medium: "Internet meme",
+    year: "2024",
+    quote: "I'm just a chill guy.",
+    phrases: ["just a chill guy", "i'm a chill guy", "im a chill guy", "chill guy"],
+    explanation: "An easygoing dog character used to describe staying unbothered, often while the situation is clearly not relaxed.",
+    wikiQuery: "Chill Guy meme Phillip Banks",
+    clipUrl: "https://knowyourmeme.com/memes/just-a-chill-guy-my-new-character",
+    clipLabel: "Open original meme",
+  },
+  {
+    title: "Surprised Pikachu",
+    source: "Pokemon anime reaction image",
+    medium: "Internet meme",
+    year: "2018",
+    quote: "Surprised Pikachu face.",
+    phrases: ["surprised pikachu", "shocked pikachu", "pikachu face"],
+    explanation: "A reaction image for acting shocked by an outcome that was completely predictable.",
+    wikiQuery: "Surprised Pikachu meme",
+    clipUrl: "https://knowyourmeme.com/memes/surprised-pikachu",
+    clipLabel: "Open meme origin",
+  },
+  {
+    title: "Woman yelling at a cat",
+    source: "Real Housewives + Smudge the cat",
+    medium: "Internet meme",
+    year: "2019",
+    quote: "Woman yelling at a cat.",
+    phrases: ["woman yelling at a cat", "lady yelling at cat", "smudge the cat"],
+    explanation: "Two unrelated images were combined into a reaction meme about an angry accusation meeting blank confusion.",
+    wikiQuery: "Woman Yelling at a Cat meme",
+    clipUrl: "https://knowyourmeme.com/memes/woman-yelling-at-a-cat",
+    clipLabel: "Open meme origin",
+  },
+  {
+    title: "Spider-Man pointing",
+    source: "1967 Spider-Man cartoon",
+    medium: "Internet meme",
+    year: "2011",
+    quote: "Spider-Man pointing at Spider-Man.",
+    phrases: ["spiderman pointing", "spider man pointing", "two spidermen pointing", "spidermen pointing at each other"],
+    explanation: "Two identical Spider-Men accuse each other, used when people or situations are comically alike.",
+    wikiQuery: "Spider-Man pointing meme",
+    clipUrl: "https://knowyourmeme.com/memes/spider-man-pointing-at-spider-man",
+    clipLabel: "Open meme origin",
+  },
+  {
+    title: "Is this a pigeon?",
+    source: "The Brave Fighter of Sun Fighbird",
+    medium: "Anime meme",
+    year: "2011",
+    quote: "Is this a pigeon?",
+    phrases: ["is this a pigeon", "is that a pigeon"],
+    explanation: "An android mistakes a butterfly for a pigeon. The meme labels obvious misunderstandings or bad classifications.",
+    wikiQuery: "Is This a Pigeon meme",
+    clipUrl: "https://knowyourmeme.com/memes/is-this-a-pigeon",
+    clipLabel: "Open meme origin",
+  },
+  {
+    title: "Let him cook",
+    source: "Internet reaction phrase",
+    medium: "Internet meme",
+    year: "2022",
+    quote: "Let him cook.",
+    phrases: ["let him cook", "let her cook", "who let him cook", "never let him cook again"],
+    explanation: "A request to let someone continue an unusual idea because it might work, or an ironic warning when it clearly will not.",
+    wikiQuery: "Let Him Cook meme",
+  },
+  {
+    title: "Doge",
+    source: "Kabosu Shiba Inu photo",
+    medium: "Internet meme",
+    year: "2013",
+    quote: "Such wow. Much amaze.",
+    phrases: ["such wow", "much wow", "very doge", "doge meme"],
+    explanation: "Photos of Kabosu paired with intentionally broken inner-monologue captions like 'such wow' and 'much amaze.'",
+    wikiQuery: "Doge meme Kabosu",
+    clipUrl: "https://knowyourmeme.com/memes/doge",
+    clipLabel: "Open meme origin",
+  },
+  {
+    title: "Press F to pay respects",
+    source: "Call of Duty: Advanced Warfare",
+    medium: "Game meme",
+    year: "2014",
+    quote: "Press F to pay respects.",
+    phrases: ["press f to pay respects", "press f", "f in the chat", "pay respects"],
+    explanation: "An awkward funeral prompt from Call of Duty became the internet's shorthand for acknowledging a loss or failure.",
+    wikiQuery: "Press F to pay respects meme",
+    clipUrl: "https://knowyourmeme.com/memes/press-f-to-pay-respects",
+    clipLabel: "Open original moment",
+  },
+  {
+    title: "Ain't nobody got time for that",
+    source: "Sweet Brown news interview",
+    medium: "Viral video",
+    year: "2012",
+    quote: "Ain't nobody got time for that.",
+    phrases: ["ain't nobody got time for that", "aint nobody got time for that", "nobody got time for that"],
+    explanation: "Sweet Brown's vivid account of escaping an apartment fire became a reaction to anything tedious or unnecessary.",
+    wikiQuery: "Ain't Nobody Got Time for That meme Sweet Brown",
+    clipUrl: "https://knowyourmeme.com/memes/sweet-brown-aint-nobody-got-time-for-that",
+    clipLabel: "Open original clip",
+  },
+  {
+    title: "What are those?",
+    source: "Brandon Moore viral video",
+    medium: "Vine meme",
+    year: "2015",
+    quote: "What are those?",
+    phrases: ["what are those", "what are thooooose"],
+    explanation: "A Vine mocking a police officer's shoes became a universal callout for questionable footwear.",
+    wikiQuery: "What Are Those meme",
+    clipUrl: "https://knowyourmeme.com/memes/what-are-those",
+    clipLabel: "Open original clip",
+  },
+  {
+    title: "We got this before GTA 6",
+    source: "Gaming meme",
+    medium: "Internet meme",
+    year: "2023",
+    quote: "We got this before GTA 6.",
+    phrases: ["before gta 6", "we got this before gta six", "got this before gta"],
+    explanation: "A joke about the long wait for Grand Theft Auto VI, attached to any surprising event that happened first.",
+    wikiQuery: "We got this before GTA 6 meme",
+  },
+  {
+    title: "Skibidi Toilet",
+    source: "DaFuq!?Boom! YouTube series",
+    medium: "YouTube meme",
+    year: "2023",
+    quote: "Skibidi dop dop yes yes.",
+    phrases: ["skibidi toilet", "skibidi dop dop", "skibidi"],
+    explanation: "A surreal animated series about singing heads in toilets that became a defining piece of Gen Alpha internet culture.",
+    wikiQuery: "Skibidi Toilet",
+    clipUrl: "https://www.youtube.com/@DaFuqBoom",
+    clipLabel: "Open original series",
+  },
+  {
+    title: "Capybara / Okay I pull up",
+    source: "TikTok capybara edits",
+    medium: "TikTok meme",
+    year: "2022",
+    quote: "Okay, I pull up.",
+    phrases: ["okay i pull up", "capybara song", "capybara meme", "after party capybara"],
+    explanation: "Capybara videos were paired with Don Toliver's 'After Party,' making the lyric inseparable from the animal edits.",
+    wikiQuery: "Capybara Okay I Pull Up meme",
+  },
 ];
 
 const ui = {
@@ -284,8 +552,6 @@ const ui = {
   waveform: document.querySelector("#waveform"),
   emptyState: document.querySelector("#empty-state"),
   resultContent: document.querySelector("#result-content"),
-  historyGrid: document.querySelector("#history-grid"),
-  clearHistory: document.querySelector("#clear-history"),
   supportNote: document.querySelector("#support-note"),
   toast: document.querySelector("#toast"),
 };
@@ -296,6 +562,8 @@ let isListening = false;
 let committedTranscript = "";
 let sampleIndex = 0;
 let toastTimer = null;
+let lastMatchedTitle = "";
+let lastMatchedAt = 0;
 
 function normalize(value) {
   return value
@@ -304,6 +572,9 @@ function normalize(value) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9\s']/g, " ")
     .replace(/\s+/g, " ")
+    .replace(/\btick tock\b/g, "tiktok")
+    .replace(/\bspider men\b/g, "spidermen")
+    .replace(/\bgta six\b/g, "gta 6")
     .trim();
 }
 
@@ -321,29 +592,49 @@ function findCatalogMatch(input) {
   const normalized = normalize(input);
   if (!normalized) return null;
 
-  const directMatch = references.find((reference) =>
-    reference.phrases.some((phrase) => normalized.includes(normalize(phrase))) ||
-    normalized === normalize(reference.title) ||
-    normalized === normalize(reference.source)
-  );
-  if (directMatch) return { ...directMatch, confidence: "Strong match" };
+  const directMatches = references.flatMap((reference) =>
+    [...reference.phrases, reference.title, reference.source].map((phrase) => ({
+      reference,
+      phrase: normalize(phrase),
+    }))
+  ).filter(({ phrase }) => {
+    if (!phrase || !normalized.includes(phrase)) return false;
+    const phraseWords = phrase.split(" ").length;
+    return phraseWords > 1 || normalized.split(" ").length <= 7;
+  }).sort((a, b) => b.phrase.length - a.phrase.length);
 
-  const inputTokens = new Set(normalized.split(" ").filter((token) => token.length > 2));
-  let best = null;
+  if (directMatches[0]) return { ...directMatches[0].reference, confidence: "Strong match" };
+
+  let bestReference = null;
   let bestScore = 0;
 
   references.forEach((reference) => {
-    const haystack = normalize(`${reference.title} ${reference.source} ${reference.phrases.join(" ")}`);
-    const referenceTokens = new Set(haystack.split(" ").filter((token) => token.length > 2));
-    const overlap = [...inputTokens].filter((token) => referenceTokens.has(token)).length;
-    const score = overlap / Math.max(1, Math.min(inputTokens.size, 5));
-    if (score > bestScore) {
-      best = reference;
-      bestScore = score;
-    }
+    reference.phrases.forEach((phrase) => {
+      const phraseTokens = normalize(phrase).split(" ").filter(Boolean);
+      if (phraseTokens.length < 2) return;
+
+      const inputTokens = normalized.split(" ").filter(Boolean);
+      const windowSizes = [phraseTokens.length - 1, phraseTokens.length, phraseTokens.length + 1]
+        .filter((size) => size > 0);
+
+      windowSizes.forEach((size) => {
+        for (let start = 0; start <= Math.max(0, inputTokens.length - size); start += 1) {
+          const windowTokens = inputTokens.slice(start, start + size);
+          const overlap = phraseTokens.filter((token) => windowTokens.includes(token)).length / phraseTokens.length;
+          const phraseText = phraseTokens.join(" ");
+          const windowText = windowTokens.join(" ");
+          const lengthPenalty = Math.abs(phraseText.length - windowText.length) / Math.max(phraseText.length, windowText.length, 1);
+          const score = overlap * 0.82 + (1 - lengthPenalty) * 0.18;
+          if (score > bestScore) {
+            bestReference = reference;
+            bestScore = score;
+          }
+        }
+      });
+    });
   });
 
-  return bestScore >= 0.55 ? { ...best, confidence: "Likely match" } : null;
+  return bestScore >= 0.72 ? { ...bestReference, confidence: "Likely match" } : null;
 }
 
 function extractReferenceCue(input) {
@@ -352,6 +643,8 @@ function extractReferenceCue(input) {
     /(?:just )?like (?:in |from )?(.+)$/i,
     /reminds? me of (.+)$/i,
     /reference to (.+)$/i,
+    /(?:that|this) (?:meme|tiktok|sound|trend) (?:where|with|about) (.+)$/i,
+    /you know (?:that|the) (?:meme|tiktok|sound) (.+)$/i,
   ];
   for (const cue of cues) {
     const match = input.match(cue);
@@ -384,6 +677,10 @@ async function searchWikipedia(query) {
 }
 
 async function enrichReference(reference) {
+  if (/tiktok|meme|viral|vine|youtube/i.test(reference.medium) && !reference.thumbnail) {
+    return reference;
+  }
+
   try {
     const pages = await searchWikipedia(reference.wikiQuery || `${reference.title} ${reference.source}`);
     const page = pages[0];
@@ -391,7 +688,7 @@ async function enrichReference(reference) {
     return {
       ...reference,
       thumbnail: page.thumbnail?.source || page.original?.source || reference.thumbnail || "",
-      sourceUrl: page.fullurl || "",
+      sourceUrl: reference.sourceUrl || page.fullurl || "",
     };
   } catch (error) {
     return reference;
@@ -433,30 +730,36 @@ async function resolveReference(input, options = {}) {
     return;
   }
 
-  setLoading();
   let match = findCatalogMatch(query);
 
   if (match) {
+    const isRecentDuplicate = match.title === lastMatchedTitle && Date.now() - lastMatchedAt < 8000;
+    if (isRecentDuplicate && options.fromSpeech) return;
+    setLoading();
     match = await enrichReference(match);
     renderResult(match);
-    saveToHistory(match);
+    lastMatchedTitle = match.title;
+    lastMatchedAt = Date.now();
     return;
   }
 
-  const cue = options.fromSpeech ? extractReferenceCue(query) : query;
+  const soundsLikeSocialReference = /\b(meme|tiktok|tick tock|trend|sound|audio|viral|giving|reminds? me|you know that)\b/i.test(query);
+  const cue = options.fromSpeech ? extractReferenceCue(query) || (soundsLikeSocialReference ? query : "") : query;
   if (!cue) {
-    showEmptyMessage("No clear reference yet", "Keep talking or try the key phrase again. We only interrupt when there is a useful match.");
+    if (!options.silentMiss) {
+      showEmptyMessage("No clear match yet. Try a longer part of the quote or name the meme.");
+    }
     return;
   }
 
+  setLoading();
   try {
-    const pages = await searchWikipedia(`${cue} film television book meme TikTok`);
+    const pages = await searchWikipedia(`"${cue}" meme TikTok film television quote`);
     if (!pages.length) throw new Error("No matches");
     const result = wikipediaFallback(pages[0], cue);
     renderResult(result);
-    saveToHistory(result);
   } catch (error) {
-    showEmptyMessage("That one slipped past us", "Try a title, a longer part of the quote, or the character who said it.");
+    showEmptyMessage("That one slipped past us. Try a title, a longer quote, or the creator's name.");
   }
 }
 
@@ -468,95 +771,78 @@ function getDiscoveryUrl(reference) {
   return `https://www.youtube.com/results?search_query=${query}`;
 }
 
+function getClipLabel(reference) {
+  if (reference.clipLabel) return reference.clipLabel;
+  if (reference.embedId || reference.clipUrl) return "Play exact clip";
+  if (/tiktok|meme|viral|vine/i.test(reference.medium)) return "Find original";
+  return "Search clips";
+}
+
 function renderResult(reference) {
   ui.emptyState.hidden = true;
   ui.resultContent.hidden = false;
-  const image = reference.thumbnail
-    ? `<img class="result-image" src="${escapeHtml(reference.thumbnail)}" alt="${escapeHtml(reference.source)}" />`
-    : `<div class="result-image-fallback"><i data-lucide="clapperboard"></i></div>`;
   const sourceLink = reference.sourceUrl || `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(reference.wikiQuery || reference.title)}`;
+  const clipLink = reference.clipUrl || getDiscoveryUrl(reference);
+  const hasExactMoment = Boolean(reference.embedId || reference.clipUrl);
+
+  let media;
+  if (reference.embedId) {
+    media = `
+      <iframe
+        class="clip-frame"
+        src="https://www.youtube-nocookie.com/embed/${escapeHtml(reference.embedId)}?rel=0"
+        title="${escapeHtml(reference.title)} clip"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    `;
+  } else if (reference.thumbnail) {
+    media = `<img class="result-image" src="${escapeHtml(reference.thumbnail)}" alt="${escapeHtml(reference.source)}" />`;
+  } else {
+    media = `<div class="result-image-fallback"><i data-lucide="play-square"></i></div>`;
+  }
+
+  const mediaAction = reference.embedId ? "" : `
+    <a class="media-action" href="${escapeHtml(clipLink)}" target="_blank" rel="noopener noreferrer">
+      <i data-lucide="play"></i><span>${escapeHtml(getClipLabel(reference))}</span>
+    </a>
+  `;
 
   ui.resultContent.innerHTML = `
-    <div class="result-image-wrap">
-      ${image}
-      <span class="match-tag">${escapeHtml(reference.confidence || "Strong match")}</span>
+    <div class="result-media">
+      ${media}
+      ${mediaAction}
     </div>
-    <div class="result-meta">
-      <span class="medium-tag">${escapeHtml(reference.medium)}</span>
-      <span class="result-year">${escapeHtml(reference.year || "Source found")}</span>
-    </div>
-    <h2>${escapeHtml(reference.title)}</h2>
-    <p class="result-source">From ${escapeHtml(reference.source)}</p>
-    <blockquote class="result-quote">${escapeHtml(reference.quote)}</blockquote>
-    <p class="result-explanation">${escapeHtml(reference.explanation)}</p>
-    <div class="result-actions">
-      <a class="action-link" href="${escapeHtml(sourceLink)}" target="_blank" rel="noopener noreferrer">
-        <i data-lucide="book-open"></i><span>Get the context</span>
-      </a>
-      <a class="action-link secondary" href="${getDiscoveryUrl(reference)}" target="_blank" rel="noopener noreferrer">
-        <i data-lucide="play"></i><span>Find the moment</span>
-      </a>
+    <div class="result-copy">
+      <div class="result-meta">
+        <span class="medium-tag">${escapeHtml(reference.medium)}</span>
+        <span>${escapeHtml(reference.year || "Source found")}</span>
+        ${hasExactMoment ? `<span class="exact-tag">Exact source</span>` : ""}
+      </div>
+      <h2>${escapeHtml(reference.title)}</h2>
+      <p class="result-source">From ${escapeHtml(reference.source)}</p>
+      <blockquote class="result-quote">${escapeHtml(reference.quote)}</blockquote>
+      <p class="result-explanation">${escapeHtml(reference.explanation)}</p>
+      <div class="result-actions">
+        ${reference.embedId ? `
+          <a class="action-link primary" href="https://www.youtube.com/watch?v=${escapeHtml(reference.embedId)}" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="play"></i><span>Open clip</span>
+          </a>
+        ` : ""}
+        <a class="action-link" href="${escapeHtml(sourceLink)}" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="book-open"></i><span>Context</span>
+        </a>
+      </div>
     </div>
   `;
   refreshIcons();
 }
 
-function showEmptyMessage(title, message) {
+function showEmptyMessage(message) {
   ui.resultContent.hidden = true;
   ui.emptyState.hidden = false;
-  ui.emptyState.querySelector("h2").textContent = title;
-  ui.emptyState.querySelector("p:not(.section-label)").textContent = message;
-}
-
-function saveToHistory(reference) {
-  const history = getHistory().filter((item) => item.title !== reference.title);
-  history.unshift({ ...reference, savedAt: new Date().toISOString() });
-  localStorage.setItem("catchThatHistory", JSON.stringify(history.slice(0, 6)));
-  renderHistory();
-}
-
-function getHistory() {
-  try {
-    return JSON.parse(localStorage.getItem("catchThatHistory")) || [];
-  } catch (error) {
-    return [];
-  }
-}
-
-function renderHistory() {
-  const history = getHistory();
-  ui.clearHistory.hidden = history.length === 0;
-
-  if (!history.length) {
-    ui.historyGrid.innerHTML = `<div class="history-empty">References you catch will stay here for a quick rewind.</div>`;
-    return;
-  }
-
-  ui.historyGrid.innerHTML = history.map((item, index) => {
-    const thumb = item.thumbnail
-      ? `<img class="history-thumb" src="${escapeHtml(item.thumbnail)}" alt="" />`
-      : `<span class="history-thumb history-thumb-fallback"><i data-lucide="clapperboard"></i></span>`;
-    const date = new Date(item.savedAt);
-    const time = Number.isNaN(date.getTime()) ? "Recently" : new Intl.DateTimeFormat("en", { hour: "numeric", minute: "2-digit" }).format(date);
-    return `
-      <button class="history-card" type="button" data-history-index="${index}">
-        ${thumb}
-        <span>
-          <span class="history-meta"><span class="history-type">${escapeHtml(item.medium)}</span><span>${escapeHtml(time)}</span></span>
-          <h3>${escapeHtml(item.title)}</h3>
-          <span class="history-meta">${escapeHtml(item.source)}</span>
-        </span>
-      </button>
-    `;
-  }).join("");
-
-  document.querySelectorAll("[data-history-index]").forEach((button) => {
-    button.addEventListener("click", () => {
-      renderResult(history[Number(button.dataset.historyIndex)]);
-      document.querySelector("#result-panel").scrollIntoView({ behavior: "smooth", block: "center" });
-    });
-  });
-  refreshIcons();
+  ui.emptyState.querySelector("p").textContent = message;
 }
 
 function setListening(nextState) {
@@ -564,8 +850,9 @@ function setListening(nextState) {
   ui.listenButton.classList.toggle("listening", nextState);
   ui.waveform.classList.toggle("active", nextState);
   ui.liveBadge.classList.toggle("listening", nextState);
-  ui.listenButtonLabel.textContent = nextState ? "Stop listening" : "Start listening";
+  ui.listenButtonLabel.textContent = nextState ? "Stop" : "Listen";
   ui.liveLabel.textContent = nextState ? "Live" : "Ready";
+  ui.listenButton.title = nextState ? "Stop listening" : "Start listening";
   ui.listenButton.querySelector("svg")?.remove();
   const icon = document.createElement("i");
   icon.dataset.lucide = nextState ? "square" : "mic";
@@ -576,6 +863,7 @@ function setListening(nextState) {
 function setupRecognition() {
   if (!SpeechRecognition) {
     ui.supportNote.textContent = "Live listening is not supported here. Type the reference above instead.";
+    ui.supportNote.hidden = false;
     ui.listenButton.disabled = true;
     return;
   }
@@ -596,7 +884,8 @@ function setupRecognition() {
 
     if (finalText) {
       committedTranscript = `${committedTranscript} ${finalText}`.trim();
-      resolveReference(finalText, { fromSpeech: true });
+      const recentTranscript = committedTranscript.split(/\s+/).slice(-32).join(" ");
+      resolveReference(recentTranscript, { fromSpeech: true, silentMiss: true });
     }
     ui.transcript.textContent = `${committedTranscript} ${interim}`.trim() || "Listening...";
     ui.transcript.classList.add("has-text");
@@ -638,9 +927,10 @@ function toggleListening() {
 function trySample() {
   const samples = [
     "Honestly, the limit does not exist.",
-    "This meeting is very demure, very mindful.",
-    "Fine, I volunteer as tribute.",
-    "That deadline is my Roman Empire.",
+    "This meeting is very demure and very mindful.",
+    "Oh no, our table, it's broken.",
+    "Okay I pull up, capybara.",
+    "That was a bombastic side eye.",
   ];
   const sample = samples[sampleIndex % samples.length];
   sampleIndex += 1;
@@ -652,7 +942,7 @@ function trySample() {
 
 function clearTranscript() {
   committedTranscript = "";
-  ui.transcript.textContent = "Your conversation will appear here while listening.";
+  ui.transcript.textContent = "Listening is off. Type above or turn it on.";
   ui.transcript.classList.remove("has-text");
 }
 
@@ -674,20 +964,8 @@ ui.searchButton.addEventListener("click", () => resolveReference(ui.searchInput.
 ui.searchInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") resolveReference(ui.searchInput.value);
 });
-ui.clearHistory.addEventListener("click", () => {
-  localStorage.removeItem("catchThatHistory");
-  renderHistory();
-  showToast("History cleared.");
-});
-document.querySelectorAll("[data-example]").forEach((button) => {
-  button.addEventListener("click", () => {
-    ui.searchInput.value = button.dataset.example;
-    resolveReference(button.dataset.example);
-  });
-});
 
 setupRecognition();
-renderHistory();
 refreshIcons();
 
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
