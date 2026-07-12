@@ -6,6 +6,8 @@
 
 **The live culture decoder for quotes, memes, TikTok sounds, and internet lore.**
 
+### [kabirkoratkar.github.io/refer](https://kabirkoratkar.github.io/refer/)
+
 [![Open Refer](https://img.shields.io/badge/OPEN_REFER-EFFF00?style=for-the-badge&logoColor=09090B)](https://kabirkoratkar.github.io/refer/)
 [![Vanilla JavaScript](https://img.shields.io/badge/VANILLA_JS-00D9FF?style=for-the-badge&logo=javascript&logoColor=09090B)](app.js)
 [![Vercel](https://img.shields.io/badge/API_ON_VERCEL-6C2BFF?style=for-the-badge&logo=vercel&logoColor=white)](https://refer-kabir.vercel.app/)
