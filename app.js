@@ -721,14 +721,12 @@ async function searchWeb(query) {
 }
 
 function buildSearchLinks(query) {
-  const encoded = encodeURIComponent(query);
+  const displayQuery = query.replace(/^[\s"'“”‘’]+|[\s"'“”‘’]+$/g, "").trim();
+  const encoded = encodeURIComponent(displayQuery);
   return {
-    web: `https://www.google.com/search?q=${encoded}`,
-    images: `https://www.google.com/search?tbm=isch&q=${encoded}`,
-    reddit: `https://www.reddit.com/search/?q=${encoded}`,
+    memes: `https://www.google.com/search?q=${encodeURIComponent(`${displayQuery} meme`)}`,
     tiktok: `https://www.tiktok.com/search?q=${encoded}`,
     x: `https://x.com/search?q=${encoded}&src=typed_query`,
-    youtube: `https://www.youtube.com/results?search_query=${encoded}`,
   };
 }
 
@@ -819,14 +817,14 @@ function renderWebResult(web, catalogMatch) {
 function renderSearchFallback(query, searches) {
   renderResult({
     title: `Search for “${query}”`,
-    source: "Across the web",
-    medium: "Web search",
+    source: "TikTok, X, and meme sources",
+    medium: "Social search",
     year: "",
     quote: `“${query}”`,
-    explanation: "Open one of the focused searches below to find the original post, image, discussion, or clip.",
-    sourceUrl: searches.web,
-    clipUrl: searches.web,
-    clipLabel: "Search the web",
+    explanation: "Open one of the focused searches below to find the original post, trend, or meme.",
+    sourceUrl: searches.memes,
+    clipUrl: searches.memes,
+    clipLabel: "Search memes",
     exact: false,
   }, [], searches);
 }
@@ -842,12 +840,9 @@ function renderWebExtras(results = [], searches = {}) {
   `).join("");
 
   const labels = {
-    web: "Web",
-    images: "Images",
-    reddit: "Reddit",
+    memes: "Memes",
     tiktok: "TikTok",
     x: "X",
-    youtube: "YouTube",
   };
   const searchLinks = Object.entries(searches).filter(([key, value]) => labels[key] && value).map(([key, value]) => `
     <a href="${escapeHtml(value)}" target="_blank" rel="noopener noreferrer">${labels[key]}</a>

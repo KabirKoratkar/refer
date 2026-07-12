@@ -13,8 +13,9 @@ GitHub Pages mirror: **https://kabirkoratkar.github.io/refer/**
 - Listens to a conversation through the browser's built-in speech recognition
 - Detects well-known quotes, catchphrases, memes, and social trends
 - Pulls up an exact clip or original post when one is known
-- Searches the live web for unknown references and ranks meme sources and videos first
-- Provides focused follow-up searches for Reddit, TikTok, X, YouTube, images, and the wider web
+- Searches TikTok, X, meme sites, and video sources for unknown references
+- Uses Claude web search to rank the likely original post or exact clip first
+- Provides focused follow-up searches for memes, TikTok, and X
 - Shows the source, meaning, date, artwork, and context
 - Supports typed searches for quieter rooms and unsupported browsers
 - Installs as a lightweight PWA and only starts the microphone when the user turns listening on
@@ -22,7 +23,7 @@ GitHub Pages mirror: **https://kabirkoratkar.github.io/refer/**
 
 ## Run locally
 
-No search API key is required. Run the app and its serverless search route together with the Vercel CLI:
+Set `ANTHROPIC_API_KEY` in your local environment, then run the app and its serverless search route together with the Vercel CLI:
 
 ```bash
 vercel dev --listen 4173
@@ -32,7 +33,7 @@ Then open http://localhost:4173 in Chrome, Edge, or Safari.
 
 ## How it works
 
-The MVP combines browser speech recognition with the serverless route in `api/search.js`. Rolling transcript matching catches phrases split across speech chunks. Search results are ranked to favor meme origins, videos, and social sources, with preview artwork pulled from the strongest result. The curated catalog remains only as a fast path for verified exact clips.
+The MVP combines browser speech recognition with the serverless route in `api/search.js`. Rolling transcript matching catches phrases split across speech chunks. Claude searches social sources and returns cited URLs, with a lightweight public search fallback when the API key is unavailable. The curated catalog remains only as a fast path for verified exact clips.
 
 ## Hackathon roadmap
 
