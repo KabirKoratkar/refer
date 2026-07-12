@@ -247,6 +247,7 @@ const references = [
     wikiQuery: "Very demure very mindful Jools Lebron",
     clipUrl: "https://www.tiktok.com/@joolieannie",
     clipLabel: "Open original creator",
+    exact: false,
   },
   {
     title: "Girl dinner",
@@ -302,6 +303,7 @@ const references = [
     wikiQuery: "Looking for a Man in Finance TikTok",
     clipUrl: "https://www.tiktok.com/@girl_on_couch",
     clipLabel: "Open original creator",
+    exact: false,
   },
   {
     title: "Hawk tuah",
@@ -346,6 +348,7 @@ const references = [
     wikiQuery: "Pinkydoll ice cream so good NPC livestream",
     clipUrl: "https://www.tiktok.com/@pinkydollreal",
     clipLabel: "Open original creator",
+    exact: false,
   },
   {
     title: "Girl math",
@@ -526,6 +529,7 @@ const references = [
     wikiQuery: "Skibidi Toilet",
     clipUrl: "https://www.youtube.com/@DaFuqBoom",
     clipLabel: "Open original series",
+    exact: false,
   },
   {
     title: "Capybara / Okay I pull up",
@@ -783,7 +787,7 @@ function renderResult(reference) {
   ui.resultContent.hidden = false;
   const sourceLink = reference.sourceUrl || `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(reference.wikiQuery || reference.title)}`;
   const clipLink = reference.clipUrl || getDiscoveryUrl(reference);
-  const hasExactMoment = Boolean(reference.embedId || reference.clipUrl);
+  const hasExactMoment = Boolean(reference.embedId || reference.clipUrl) && reference.exact !== false;
 
   let media;
   if (reference.embedId) {
